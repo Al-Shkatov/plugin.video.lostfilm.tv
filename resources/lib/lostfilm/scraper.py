@@ -109,13 +109,13 @@ class LostFilmScraper(AbstractScraper):
             return False
 
     def fetch(self, url, params=None, data=None, **request_params):
-        try
+        try:
             self.response = super(LostFilmScraper, self).fetch(url, params, data, **request_params)
             encoding = self.response.encoding
             if encoding == 'ISO-8859-1':
                 encoding = 'windows-1251'
             return HtmlDocument.from_string(self.response.content, encoding)
-        except HTTPError
+        except HTTPError:
             return ''
 
     def authorize(self):
