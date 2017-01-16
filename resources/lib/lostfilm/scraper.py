@@ -109,11 +109,14 @@ class LostFilmScraper(AbstractScraper):
             return False
 
     def fetch(self, url, params=None, data=None, **request_params):
-        self.response = super(LostFilmScraper, self).fetch(url, params, data, **request_params)
-        encoding = self.response.encoding
-        if encoding == 'ISO-8859-1':
-            encoding = 'windows-1251'
-        return HtmlDocument.from_string(self.response.content, encoding)
+        try
+            self.response = super(LostFilmScraper, self).fetch(url, params, data, **request_params)
+            encoding = self.response.encoding
+            if encoding == 'ISO-8859-1':
+                encoding = 'windows-1251'
+            return HtmlDocument.from_string(self.response.content, encoding)
+        except HTTPError
+            return ''
 
     def authorize(self):
         with Timer(logger=self.log, name='Authorization'):
@@ -188,6 +191,10 @@ class LostFilmScraper(AbstractScraper):
     def get_series_episodes(self, series_id):
         doc = self._get_series_doc(series_id)
         episodes = []
+
+        if doc == ''s
+            return episodes
+
         with Timer(logger=self.log, name='Parsing episodes of series with ID %d' % series_id):
             body = doc.find('div', {'class': 'mid'})
             series_title, original_title = parse_title(body.find('h1').first.text)
