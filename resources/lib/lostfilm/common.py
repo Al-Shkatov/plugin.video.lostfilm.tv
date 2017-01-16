@@ -164,7 +164,7 @@ def itemify_common(s):
             'plot': s.plot or s.about,
             'rating': None,
             'studio': None,
-            'castandrole': s.actors,
+            #'castandrole': s.actors,
             'writer': " / ".join(s.writers) if s.writers else None,
             'director': " / ".join(s.producers) if s.producers else None,
             'genre': " / ".join(s.genres) if s.genres else None,

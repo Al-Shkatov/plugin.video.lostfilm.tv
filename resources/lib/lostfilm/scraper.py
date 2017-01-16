@@ -172,6 +172,7 @@ class LostFilmScraper(AbstractScraper):
                     futures = [executor.submit(self.get_series_info, _id) for _id in not_cached_ids]
                     for future in as_completed(futures):
                         result = future.result()
+                        # if result.title is not 'Blocked':
                         self.series_cache[result.id] = results[result.id] = result
         return results
 
@@ -192,7 +193,7 @@ class LostFilmScraper(AbstractScraper):
         doc = self._get_series_doc(series_id)
         episodes = []
 
-        if not doc:
+        if doc is False:
             return episodes
 
         with Timer(logger=self.log, name='Parsing episodes of series with ID %d' % series_id):
@@ -237,6 +238,8 @@ class LostFilmScraper(AbstractScraper):
 
     def get_series_info(self, series_id):
         doc = self._get_series_doc(series_id)
+        if doc is False:
+            return Series(series_id, 'Blocked', None, None, None, None, None, None, None, None, None, None, None, None, 0, 0)
         with Timer(logger=self.log, name='Parsing series info with ID %d' % series_id):
             body = doc.find('div', {'class': 'mid'})
             series_title, original_title = parse_title(body.find('h1').first.text)
