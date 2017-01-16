@@ -192,7 +192,7 @@ class LostFilmScraper(AbstractScraper):
         doc = self._get_series_doc(series_id)
         episodes = []
 
-        if doc == ''s
+        if doc == '':
             return episodes
 
         with Timer(logger=self.log, name='Parsing episodes of series with ID %d' % series_id):
