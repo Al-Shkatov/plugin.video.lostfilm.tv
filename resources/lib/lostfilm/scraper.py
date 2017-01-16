@@ -116,7 +116,7 @@ class LostFilmScraper(AbstractScraper):
                 encoding = 'windows-1251'
             return HtmlDocument.from_string(self.response.content, encoding)
         except Exception:
-            return ''
+            return False
 
     def authorize(self):
         with Timer(logger=self.log, name='Authorization'):
@@ -192,7 +192,7 @@ class LostFilmScraper(AbstractScraper):
         doc = self._get_series_doc(series_id)
         episodes = []
 
-        if doc == '':
+        if not doc:
             return episodes
 
         with Timer(logger=self.log, name='Parsing episodes of series with ID %d' % series_id):
