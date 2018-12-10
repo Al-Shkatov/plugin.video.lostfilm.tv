@@ -305,7 +305,7 @@ class LostFilmScraper(AbstractScraper):
         return episodes
 
     def get_torrent_links(self, series_id, season_number, episode_number):
-        doc = self.fetch(self.BASE_URL + '/nrdr.php', {
+        doc = self.fetch(self.BASE_URL + '/nrdr2.php', {
             'c': series_id,
             's': season_number,
             'e': episode_number
